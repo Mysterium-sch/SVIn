@@ -46,7 +46,6 @@
 #include <ros/package.h>
 #pragma GCC diagnostic pop
 #include <cv_bridge/cv_bridge.h>
-#include <okvis_ros/SvinHealth.h>
 #include <sensor_msgs/PointCloud.h>
 #include <sensor_msgs/fill_image.h>
 #include <sensor_msgs/image_encodings.h>

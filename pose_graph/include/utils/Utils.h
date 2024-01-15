@@ -1,7 +1,6 @@
 #pragma once
 
 #include <geometry_msgs/Pose.h>
-#include <pose-graph/SvinHealth.h>
 
 #include <cassert>
 #include <chrono>
