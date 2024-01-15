@@ -14,6 +14,11 @@ set(CMAKE_CXX_STANDARD 14)
 # changed to -march=native. Working in Ubuntu 18.04 and 20.04
 set(CMAKE_CXX_FLAGS "-march=native -fPIC -Wall")
 
+add_message_files(
+  FILES
+  SvinHealth.msg
+)
+
 find_package(catkin REQUIRED COMPONENTS
     roscpp
     std_msgs
