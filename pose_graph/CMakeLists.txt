@@ -14,11 +14,6 @@ set(CMAKE_CXX_STANDARD 14)
 # changed to -march=native. Working in Ubuntu 18.04 and 20.04
 set(CMAKE_CXX_FLAGS "-march=native -fPIC -Wall")
 
-add_message_files(
-  FILES
-  SvinHealth.msg
-)
-
 find_package(catkin REQUIRED COMPONENTS
     roscpp
     std_msgs
@@ -28,6 +23,7 @@ find_package(catkin REQUIRED COMPONENTS
     pcl_ros
     pcl_conversions
     image_transport
+    message_generation
     )
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
@@ -83,6 +79,11 @@ add_library(${PROJECT_NAME}
     ThirdParty/DUtils/Timestamp.cpp
     ThirdParty/DVision/BRIEF.cpp
     ThirdParty/VocabularyBinary.cpp
+)
+
+add_message_files(
+  FILES
+  SvinHealth.msg
 )
 
 target_link_libraries(${PROJECT_NAME}
