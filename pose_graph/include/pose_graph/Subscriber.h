@@ -5,6 +5,7 @@
 #include <message_filters/subscriber.h>
 #include <message_filters/sync_policies/exact_time.h>
 #include <nav_msgs/Odometry.h>
+#include <pose_graph/SvinHealth.h>
 #include <sensor_msgs/PointCloud.h>
 
 #include <memory>
