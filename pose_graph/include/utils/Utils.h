@@ -1,7 +1,7 @@
 #pragma once
 
 #include <geometry_msgs/Pose.h>
-#include <pose_graph/SvinHealth.h>
+#include <okvis_ros/SvinHealth.h>
 
 #include <cassert>
 #include <chrono>
@@ -12,7 +12,7 @@
 
 #include "common/Definitions.h"
 
-class Utility {
+class Utils {
  public:
   template <typename Derived>
   static Eigen::Quaternion<typename Derived::Scalar> deltaQ(const Eigen::MatrixBase<Derived>& theta) {
