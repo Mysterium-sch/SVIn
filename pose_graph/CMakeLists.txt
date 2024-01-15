@@ -20,7 +20,6 @@ find_package(catkin REQUIRED COMPONENTS
     nav_msgs
     cv_bridge
     roslib
-    okvis_ros  # For SvinHealth msg
     pcl_ros
     pcl_conversions
     image_transport
@@ -54,7 +53,7 @@ include_directories(include
                     ${PCL_INCLUDE_DIRS}
                     ${Boost_INCLUDE_DIRS})
 
-catkin_package(CATKIN_DEPENDS okvis_ros pcl_ros pcl_conversions)
+catkin_package(CATKIN_DEPENDS pcl_ros pcl_conversions)
 
 add_library(${PROJECT_NAME} 
     src/pose_graph/GlobalMapping.cpp
