@@ -1,0 +1,8 @@
+<launch>
+
+<arg name="config_path" default="$(find pose_graph)/config/stereo_rig/stereo_rig_v2_config.yaml" />
+ 	<param name="/use_sim_time" value="true" />
+ 	<node name="pose_graph_node" pkg="pose_graph" type="pose_graph_node" output="screen">
+ 	<param name=" config_file" type="string" value="$(arg config_path)" />
+    </node>"
+</launch>"
