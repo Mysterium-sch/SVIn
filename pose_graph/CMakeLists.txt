@@ -50,6 +50,7 @@ generate_messages(
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
+
 find_package(OpenCV)
 find_package(PCL  REQUIRED)
 find_package(Boost COMPONENTS filesystem system REQUIRED)
@@ -77,6 +78,20 @@ include_directories(include
                     ${Boost_INCLUDE_DIRS})
 
 catkin_package(CATKIN_DEPENDS pcl_ros pcl_conversions)
+
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/okvis/cmake")
+find_package(VISensor)
+
+if(VISENSORDRIVER_FOUND)
+  add_definitions(-DHAVE_LIBVISENSOR)
+  message(STATUS "Found libvisensor in ROS interface.")
+  include_directories(${VISensorDriver_INCLUDE_DIR})
+else()
+  message(WARNING "libvisensor not found")
+endif()
+
+add_definitions(-fPIC -march=native -Wextra -Winit-self -Woverloaded-virtual
+                -Wnon-virtual-dtor -Wsign-promo -Wno-long-long -std=c++14)
 
 add_library(${PROJECT_NAME} 
     src/pose_graph/GlobalMapping.cpp
