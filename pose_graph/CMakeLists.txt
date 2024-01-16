@@ -26,6 +26,13 @@ find_package(catkin REQUIRED COMPONENTS
     image_transport
     message_generation
     sensor_msgs
+      tf2
+  tf2_ros
+  tf2_sensor_msgs
+  tf2_geometry_msgs
+  message_generation
+    std_srvs
+  nav_msgs
     )
 
     add_message_files(

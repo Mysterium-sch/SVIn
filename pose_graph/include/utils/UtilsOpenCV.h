@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sensor_msgs/Image.h>
+#include <utility>
 
 #include <opencv2/opencv.hpp>
 #include <string>
