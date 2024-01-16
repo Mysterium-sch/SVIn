@@ -28,6 +28,19 @@ find_package(catkin REQUIRED COMPONENTS
     sensor_msgs
     )
 
+    add_message_files(
+  FILES
+  SvinHealth.msg
+)
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+  geometry_msgs
+  nav_msgs
+)
+
+
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 find_package(OpenCV)
@@ -81,18 +94,6 @@ add_library(${PROJECT_NAME}
     ThirdParty/DUtils/Timestamp.cpp
     ThirdParty/DVision/BRIEF.cpp
     ThirdParty/VocabularyBinary.cpp
-)
-
-add_message_files(
-  FILES
-  SvinHealth.msg
-)
-
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-  geometry_msgs
-  nav_msgs
 )
 
 target_link_libraries(${PROJECT_NAME}

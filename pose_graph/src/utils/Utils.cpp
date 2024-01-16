@@ -60,7 +60,7 @@ std::string Utility::To_string_with_precision(const double a_value, const int n)
   return out.str();
 }
 
-std::string Utility::healthMsgToString(const okvis_ros::SvinHealthConstPtr& health) {
+std::string Utility::healthMsgToString(const pose_graph::SvinHealthConstPtr& health) {
   std::stringstream ss;
   std::setprecision(5);
   ss << "#keypoints: " << health->numTrackedKps << ","

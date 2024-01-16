@@ -43,10 +43,10 @@ class Subscriber {
   ImageSubscriber keyframe_image_subscriber_;
   message_filters::Subscriber<nav_msgs::Odometry> keyframe_pose_subscriber_;
   message_filters::Subscriber<sensor_msgs::PointCloud> keyframe_points_subscriber_;
-  message_filters::Subscriber<okvis_ros::SvinHealth> svin_health_subscriber_;
+  message_filters::Subscriber<pose_graph::SvinHealth> svin_health_subscriber_;
 
   typedef message_filters::sync_policies::
-      ExactTime<sensor_msgs::Image, nav_msgs::Odometry, sensor_msgs::PointCloud, okvis_ros::SvinHealth>
+      ExactTime<sensor_msgs::Image, nav_msgs::Odometry, sensor_msgs::PointCloud, pose_graph::SvinHealth>
           keyframe_sync_policy;
 
   std::unique_ptr<message_filters::Synchronizer<keyframe_sync_policy>> sync_keyframe_;
@@ -63,7 +63,7 @@ class Subscriber {
   void keyframeCallback(const sensor_msgs::ImageConstPtr& kf_image_msg,
                         const nav_msgs::OdometryConstPtr& kf_odom,
                         const sensor_msgs::PointCloudConstPtr& kf_points,
-                        const okvis_ros::SvinHealthConstPtr& svin_health);
+                        const pose_graph::SvinHealthConstPtr& svin_health);
 
   std::queue<nav_msgs::OdometryConstPtr> prim_estimator_odom_buffer_;
 
