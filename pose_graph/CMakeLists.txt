@@ -16,6 +16,7 @@ set(CMAKE_CXX_FLAGS "-march=native -fPIC -Wall")
 
 find_package(catkin REQUIRED COMPONENTS
     roscpp
+    rospy
     std_msgs
     nav_msgs
     cv_bridge
@@ -24,7 +25,15 @@ find_package(catkin REQUIRED COMPONENTS
     pcl_conversions
     image_transport
     message_generation
+    sensor_msgs
     )
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+  geometry_msgs
+  nav_msgs
+)
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
