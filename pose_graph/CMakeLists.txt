@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(pose_graph)
-include(ExternalProject)
-
 
 if(CMAKE_BUILD_TYPE)
     message(STATUS "Build type specified as ${CMAKE_BUILD_TYPE}")
