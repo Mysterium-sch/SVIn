@@ -485,7 +485,7 @@ bool Keyframe::findConnection(Keyframe* old_kf) {
     relative_t = PnP_R_old.transpose() * (origin_svin_T - PnP_T_old);
     relative_q = PnP_R_old.transpose() * origin_svin_R;
 
-    relative_yaw = Utility::normalizeAngle(Utility::R2ypr(origin_svin_R).x() - Utility::R2ypr(PnP_R_old).x());
+    relative_yaw = normalizeAngle(R2ypr(origin_svin_R).x() - R2ypr(PnP_R_old).x());
 
     if (abs(relative_yaw) < 25.0 && relative_t.norm() < 15.0) {
       if (params_.debug_mode_) {
@@ -516,7 +516,7 @@ bool Keyframe::findConnection(Keyframe* old_kf) {
         std::string loop_closure_stats = params_.debug_output_path_ + "/loop_closure.txt";
         std::ofstream loop_closure_file(loop_closure_stats, std::ios::app);
         loop_closure_file.setf(std::ios::fixed, std::ios::floatfield);
-        Eigen::Vector3d relative_ypr = Utility::R2ypr(relative_q.toRotationMatrix());
+        Eigen::Vector3d relative_ypr = R2ypr(relative_q.toRotationMatrix());
         loop_closure_file.precision(9);
         loop_closure_file << index << " " << time_stamp << " " << old_kf->index << " " << old_kf->time_stamp << " "
                           << relative_t.x() << " " << relative_t.y() << " " << relative_t.z() << " "
