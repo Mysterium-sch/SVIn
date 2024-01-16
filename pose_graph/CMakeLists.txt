@@ -88,6 +88,12 @@ else()
   message(WARNING "libvisensor not found")
 endif()
 
+include_directories(include)
+include_directories(
+  ${catkin_INCLUDE_DIRS}
+  ${CMAKE_BINARY_DIR}/include
+)
+
 add_definitions(-fPIC -march=native -Wextra -Winit-self -Woverloaded-virtual
                 -Wnon-virtual-dtor -Wsign-promo -Wno-long-long -std=c++14)
 
