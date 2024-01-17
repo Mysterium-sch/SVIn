@@ -24,39 +24,36 @@ find_package(catkin REQUIRED COMPONENTS
     image_transport
     message_generation
     sensor_msgs
-      tf2
-  tf2_ros
-  tf2_sensor_msgs
-  tf2_geometry_msgs
-  message_generation
+    tf2
+    tf2_ros
+    tf2_sensor_msgs
+    tf2_geometry_msgs
+    message_generation
     std_srvs
-  nav_msgs
-    )
+    nav_msgs
+)
 
-    add_message_files(
-  FILES
-  SvinHealth.msg
+add_message_files(
+    FILES
+    SvinHealth.msg
 )
 
 generate_messages(
-  DEPENDENCIES
-  std_msgs
-  geometry_msgs
-  nav_msgs
+    DEPENDENCIES
+    std_msgs
+    geometry_msgs
+    nav_msgs
 )
-
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
-
 find_package(OpenCV)
-find_package(PCL  REQUIRED)
+find_package(PCL REQUIRED)
 find_package(Boost COMPONENTS filesystem system REQUIRED)
-# find_package(opengv REQUIRED)
 find_package(Glog REQUIRED)
 
 # brisk
-find_package( brisk 2 REQUIRED )
+find_package(brisk 2 REQUIRED)
 include_directories(BEFORE ${BRISK_INCLUDE_DIRS})
 message(STATUS "Using system brisk. Found at ${BRISK_INCLUDE_DIRS}.")
 
@@ -65,8 +62,8 @@ find_package(Ceres REQUIRED)
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 find_package(Eigen3)
 
-include_directories(BEFORE  ${GLOG_INCLUDE_DIRS})
-include_directories(include 
+include_directories(BEFORE ${GLOG_INCLUDE_DIRS})
+include_directories(include
                     ThirdParty
                     ${catkin_INCLUDE_DIRS}
                     ${CERES_INCLUDE_DIRS}
@@ -81,21 +78,24 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/okvis/cmake")
 find_package(VISensor)
 
 if(VISENSORDRIVER_FOUND)
-  add_definitions(-DHAVE_LIBVISENSOR)
-  message(STATUS "Found libvisensor in ROS interface.")
-  include_directories(${VISensorDriver_INCLUDE_DIR})
+    add_definitions(-DHAVE_LIBVISENSOR)
+    message(STATUS "Found libvisensor in ROS interface.")
+    include_directories(${VISensorDriver_INCLUDE_DIR})
 else()
-  message(WARNING "libvisensor not found")
+    message(WARNING "libvisensor not found")
 endif()
 
 include_directories(include)
 include_directories(
-  ${catkin_INCLUDE_DIRS}
-  ${CMAKE_BINARY_DIR}/include
+    ${catkin_INCLUDE_DIRS}
+    ${CMAKE_BINARY_DIR}/include
 )
 
 add_definitions(-fPIC -march=native -Wextra -Winit-self -Woverloaded-virtual
                 -Wnon-virtual-dtor -Wsign-promo -Wno-long-long -std=c++14)
+
+# Add Utils.h to the list of header files
+set(HEADER_FILES include/utils/Utils.h)
 
 add_library(${PROJECT_NAME} 
     src/pose_graph/GlobalMapping.cpp
@@ -110,7 +110,7 @@ add_library(${PROJECT_NAME}
     src/utils/UtilsOpenCV.cpp
     src/utils/Utils.cpp
     src/utils/Statistics.cpp
-    # src/utils/LoopClosureUtils.cpp
+    ${HEADER_FILES}  # Add Utils.h here
     ThirdParty/DBoW/BowVector.cpp
     ThirdParty/DBoW/FBrief.cpp
     ThirdParty/DBoW/FeatureVector.cpp
@@ -122,14 +122,22 @@ add_library(${PROJECT_NAME}
     ThirdParty/VocabularyBinary.cpp
 )
 
+# Link Utils.h with the library
+target_include_directories(${PROJECT_NAME} PUBLIC include/utils)
+
 target_link_libraries(${PROJECT_NAME}
-  opengv
-  ${catkin_LIBRARIES}
-  ${OpenCV_LIBS}
-  ${CERES_LIBRARIES} 
-  ${BRISK_LIBRARIES}
-  ${PCL_LIBRARIES}
-  ${Boost_LIBRARIES}) 
+    opengv
+    ${catkin_LIBRARIES}
+    ${OpenCV_LIBS}
+    ${CERES_LIBRARIES} 
+    ${BRISK_LIBRARIES}
+    ${PCL_LIBRARIES}
+    ${Boost_LIBRARIES}
+) 
+
+# Build Utils.h target
+add_executable(${PROJECT_NAME}_utils include/utils/Utils.h)
+target_link_libraries(${PROJECT_NAME}_utils ${PROJECT_NAME})
 
 add_executable(${PROJECT_NAME}_node src/pose_graph_node.cpp)
 target_link_libraries(${PROJECT_NAME}_node ${PROJECT_NAME})
