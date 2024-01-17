@@ -61,7 +61,7 @@ void Publisher::publishKeyframePath(const std::pair<Timestamp, Eigen::Matrix4d>&
   Eigen::Vector3d trans = kf_pose.second.block<3, 1>(0, 3);
 
   geometry_msgs::PoseStamped pose_stamped;
-  pose_stamped.header.stamp = Utility::toRosTime(kf_pose.first);
+  pose_stamped.header.stamp = Utils::toRosTime(kf_pose.first);
   pose_stamped.header.frame_id = "world";
   pose_stamped.pose.position.x = trans.x();
   pose_stamped.pose.position.y = trans.y();
@@ -94,7 +94,7 @@ void Publisher::publishLoopClosurePath(
     Eigen::Quaterniond quat(rot);
     Eigen::Vector3d trans = kf_pose.second.block<3, 1>(0, 3);
     geometry_msgs::PoseStamped pose_stamped;
-    pose_stamped.header.stamp = Utility::toRosTime(kf_pose.first);
+    pose_stamped.header.stamp = Utils::toRosTime(kf_pose.first);
     pose_stamped.header.frame_id = "world";
     pose_stamped.pose.position.x = trans.x();
     pose_stamped.pose.position.y = trans.y();
