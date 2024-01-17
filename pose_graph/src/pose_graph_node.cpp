@@ -152,7 +152,7 @@ int main(int argc, char** argv) {
     ros::spinOnce();
     if (ros::Time::now() - last_print_time > ros::Duration(10.0)) {
       last_print_time = ros::Time::now();
-      LOG(INFO) << Utility::Statistics::Print();
+      LOG(INFO) << utils::Statistics::Print();
     }
   }
 

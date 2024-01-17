@@ -4,5 +4,5 @@
  	<param name="/use_sim_time" value="true" />
  	<node name="pose_graph_node" pkg="pose_graph" type="pose_graph_node" output="screen">
  	<param name=" config_file" type="string" value="$(arg config_path)" />
-    </node>"
-</launch>"
+    </node>
+</launch>
