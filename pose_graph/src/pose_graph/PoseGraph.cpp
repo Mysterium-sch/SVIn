@@ -84,8 +84,8 @@ void PoseGraph::addKFToPoseGraph(Keyframe* cur_kf, bool flag_detect_loop) {
       double shift_yaw;
       Eigen::Matrix3d shift_r;
       Eigen::Vector3d shift_t;
-      shift_yaw = Utils::R2ypr(w_R_cur).x() - Utils::R2ypr(svin_R_cur).x();
-      shift_r = Utils::ypr2R(Eigen::Vector3d(shift_yaw, 0, 0));
+      shift_yaw = Utility::R2ypr(w_R_cur).x() - Utility::R2ypr(svin_R_cur).x();
+      shift_r = Utility::ypr2R(Eigen::Vector3d(shift_yaw, 0, 0));
       shift_t = w_P_cur - w_R_cur * svin_R_cur.transpose() * svin_P_cur;
       // shift svin pose of whole sequence to the world frame
       if (old_kf->sequence != cur_kf->sequence && sequence_loop[cur_kf->sequence] == 0) {
@@ -269,7 +269,7 @@ void PoseGraph::optimize4DoFPoseGraph() {
         t_array[i][2] = tmp_t(2);
         q_array[i] = tmp_q;
 
-        Eigen::Vector3d euler_angle = Utils::R2ypr(tmp_q.toRotationMatrix());
+        Eigen::Vector3d euler_angle = Utility::R2ypr(tmp_q.toRotationMatrix());
         euler_array[i][0] = euler_angle.x();
         euler_array[i][1] = euler_angle.y();
         euler_array[i][2] = euler_angle.z();
@@ -288,7 +288,7 @@ void PoseGraph::optimize4DoFPoseGraph() {
         // adding sequential egde. Fixed sized window of length 4 serves as covisibility
         for (int j = 1; j < 5; j++) {
           if (i - j >= 0 && sequence_array[i] == sequence_array[i - j]) {
-            Eigen::Vector3d euler_conncected = Utils::R2ypr(q_array[i - j].toRotationMatrix());
+            Eigen::Vector3d euler_conncected = Utility::R2ypr(q_array[i - j].toRotationMatrix());
             Eigen::Vector3d relative_t(t_array[i][0] - t_array[i - j][0],
                                        t_array[i][1] - t_array[i - j][1],
                                        t_array[i][2] - t_array[i - j][2]);
@@ -310,7 +310,7 @@ void PoseGraph::optimize4DoFPoseGraph() {
         if ((*it)->has_loop) {
           assert((*it)->loop_index >= first_looped_index);
           int connected_index = getKFPtr((*it)->loop_index)->local_index;
-          Eigen::Vector3d euler_conncected = Utils::R2ypr(q_array[connected_index].toRotationMatrix());
+          Eigen::Vector3d euler_conncected = Utility::R2ypr(q_array[connected_index].toRotationMatrix());
           Eigen::Vector3d relative_t;
           relative_t = (*it)->getLoopRelativeT();
           double relative_yaw = (*it)->getLoopRelativeYaw();
@@ -337,7 +337,7 @@ void PoseGraph::optimize4DoFPoseGraph() {
       for (it = keyframelist.begin(); it != keyframelist.end(); it++) {
         if ((*it)->index < first_looped_index) continue;
         Eigen::Quaterniond tmp_q;
-        tmp_q = Utils::ypr2R(Eigen::Vector3d(euler_array[i][0], euler_array[i][1], euler_array[i][2]));
+        tmp_q = Utility::ypr2R(Eigen::Vector3d(euler_array[i][0], euler_array[i][1], euler_array[i][2]));
         Eigen::Vector3d tmp_t = Eigen::Vector3d(t_array[i][0], t_array[i][1], t_array[i][2]);
         Eigen::Matrix3d tmp_r = tmp_q.toRotationMatrix();
         (*it)->updatePose(tmp_t, tmp_r);
@@ -353,8 +353,8 @@ void PoseGraph::optimize4DoFPoseGraph() {
       cur_kf->getSVInPose(svin_t, svin_r);
 
       driftMutex_.lock();
-      yaw_drift = Utils::R2ypr(cur_r).x() - Utils::R2ypr(svin_r).x();
-      r_drift = Utils::ypr2R(Eigen::Vector3d(yaw_drift, 0, 0));
+      yaw_drift = Utility::R2ypr(cur_r).x() - Utility::R2ypr(svin_r).x();
+      r_drift = Utility::ypr2R(Eigen::Vector3d(yaw_drift, 0, 0));
       t_drift = cur_t - r_drift * svin_t;
       driftMutex_.unlock();
 
@@ -434,8 +434,8 @@ void PoseGraph::updateKeyFrameLoop(int index, Eigen::Matrix<double, 8, 1>& _loop
       double shift_yaw;
       Eigen::Matrix3d shift_r;
       Eigen::Vector3d shift_t;
-      shift_yaw = Utils::R2ypr(w_R_cur).x() - Utils::R2ypr(svin_R_cur).x();
-      shift_r = Utils::ypr2R(Eigen::Vector3d(shift_yaw, 0, 0));
+      shift_yaw = Utility::R2ypr(w_R_cur).x() - Utility::R2ypr(svin_R_cur).x();
+      shift_r = Utility::ypr2R(Eigen::Vector3d(shift_yaw, 0, 0));
       shift_t = w_P_cur - w_R_cur * svin_R_cur.transpose() * svin_P_cur;
 
       {

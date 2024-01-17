@@ -11,6 +11,7 @@
 #include "pose_graph/Parameters.h"
 #include "utils/UtilsOpenCV.h"
 
+
 const int Keyframe::TH_HIGH = 100;
 const int Keyframe::TH_LOW = 50;
 const size_t Keyframe::briskDetectionOctaves_ = 0;                ///< The set number of brisk octaves.
@@ -383,12 +384,12 @@ bool Keyframe::findConnection(Keyframe* old_kf) {
   matched_ids = point_ids_;
 
   if (params_.debug_mode_) {
-    cv::Mat old_img = UtilsOpenCV::DrawCircles(old_kf->image, old_kf->keypoints);
-    cv::Mat cur_image = UtilsOpenCV::DrawCircles(image, point_2d_uv);
+    cv::Mat old_img = UtilityOpenCV::DrawCircles(old_kf->image, old_kf->keypoints);
+    cv::Mat cur_image = UtilityOpenCV::DrawCircles(image, point_2d_uv);
     std::string loop_candidate_directory = params_.debug_output_path_ + "/loop_candidates/";
     std::string filename = loop_candidate_directory + "loop_candidate_" + std::to_string(index) + "_" +
                            std::to_string(old_kf->index) + ".png";
-    UtilsOpenCV::showImagesSideBySide(cur_image, old_img, "loop closing candidates", false, true, filename);
+    UtilityOpenCV::showImagesSideBySide(cur_image, old_img, "loop closing candidates", false, true, filename);
   }
 
   searchByBRIEFDes(matched_2d_old,
@@ -406,7 +407,7 @@ bool Keyframe::findConnection(Keyframe* old_kf) {
 
   if (params_.debug_mode_) {
     cv::Mat corners_match_image =
-        UtilsOpenCV::DrawCornersMatches(image, matched_2d_cur, old_kf->image, matched_2d_old, true);
+        UtilityOpenCV::DrawCornersMatches(image, matched_2d_cur, old_kf->image, matched_2d_old, true);
     std::string dscriptor_match_dir = params_.debug_output_path_ + "/descriptor_matched/";
     std::string filename = dscriptor_match_dir + "descriptor_match_" + std::to_string(index) + "_" +
                            std::to_string(old_kf->index) + ".png";
@@ -416,7 +417,7 @@ bool Keyframe::findConnection(Keyframe* old_kf) {
   // std::cout << "Size Before RANSAC: " << matched_2d_cur.size() << std::endl;
 
   // opengv::transformation_t T_w_c_old;
-  // if (LoopClosureUtils::geometricVerificationNister(
+  // if (LoopClosureUtility::geometricVerificationNister(
   //         matched_2d_cur, matched_2d_old, status, params_.loop_closure_params_.min_correspondences, &T_w_c_old)) {
   //   reduceVector(matched_2d_old, status);
   //   reduceVector(matched_3d, status);
@@ -427,7 +428,7 @@ bool Keyframe::findConnection(Keyframe* old_kf) {
 
   //   if (params_.debug_image_) {
   //     cv::Mat corners_match_image =
-  //         UtilsOpenCV::DrawCornersMatches(image, matched_2d_cur, old_kf->image, matched_2d_old, true);
+  //         UtilityOpenCV::DrawCornersMatches(image, matched_2d_cur, old_kf->image, matched_2d_old, true);
   //     std::string dscriptor_match_dir = pkg_path + "/output_logs/geometric_verification/";
   //     std::string filename = dscriptor_match_dir + "geometric_verification_" + std::to_string(index) + "_" +
   //                            std::to_string(old_kf->index) + ".png";
@@ -454,7 +455,7 @@ bool Keyframe::findConnection(Keyframe* old_kf) {
 
     if (params_.debug_mode_) {
       cv::Mat pnp_verified_image =
-          UtilsOpenCV::DrawCornersMatches(image, matched_2d_cur, old_kf->image, matched_2d_old, true);
+          UtilityOpenCV::DrawCornersMatches(image, matched_2d_cur, old_kf->image, matched_2d_old, true);
       cv::Mat notation(50, pnp_verified_image.cols, CV_8UC3, cv::Scalar(255, 255, 255));
       putText(notation,
               "current frame: " + std::to_string(index),
@@ -485,12 +486,12 @@ bool Keyframe::findConnection(Keyframe* old_kf) {
     relative_t = PnP_R_old.transpose() * (origin_svin_T - PnP_T_old);
     relative_q = PnP_R_old.transpose() * origin_svin_R;
 
-    relative_yaw = Utils::normalizeAngle(Utils::R2ypr(origin_svin_R).x() - Utils::R2ypr(PnP_R_old).x());
+    relative_yaw = Utility::normalizeAngle(Utility::R2ypr(origin_svin_R).x() - Utility::R2ypr(PnP_R_old).x());
 
     if (abs(relative_yaw) < 25.0 && relative_t.norm() < 15.0) {
       if (params_.debug_mode_) {
         cv::Mat loop_image =
-            UtilsOpenCV::DrawCornersMatches(image, matched_2d_cur, old_kf->image, matched_2d_old, true);
+            UtilityOpenCV::DrawCornersMatches(image, matched_2d_cur, old_kf->image, matched_2d_old, true);
         cv::Mat notation(50, loop_image.cols, CV_8UC3, cv::Scalar(255, 255, 255));
         putText(notation,
                 "current frame: " + std::to_string(index),
@@ -516,7 +517,7 @@ bool Keyframe::findConnection(Keyframe* old_kf) {
         std::string loop_closure_stats = params_.debug_output_path_ + "/loop_closure.txt";
         std::ofstream loop_closure_file(loop_closure_stats, std::ios::app);
         loop_closure_file.setf(std::ios::fixed, std::ios::floatfield);
-        Eigen::Vector3d relative_ypr = Utils::R2ypr(relative_q.toRotationMatrix());
+        Eigen::Vector3d relative_ypr = Utility::R2ypr(relative_q.toRotationMatrix());
         loop_closure_file.precision(9);
         loop_closure_file << index << " " << time_stamp << " " << old_kf->index << " " << old_kf->time_stamp << " "
                           << relative_t.x() << " " << relative_t.y() << " " << relative_t.z() << " "
