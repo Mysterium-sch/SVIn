@@ -122,10 +122,6 @@ add_library(${PROJECT_NAME}
     ThirdParty/VocabularyBinary.cpp
 )
 
-add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_gencfg)
-add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_generate_messages_cpp) 
-add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_utils_cpp)
-
 target_link_libraries(${PROJECT_NAME}
   opengv
   ${catkin_LIBRARIES}
