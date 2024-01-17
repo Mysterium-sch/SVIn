@@ -230,8 +230,8 @@ void LoopClosure::updatePrimiteEstimatorTrajectory(const nav_msgs::OdometryConst
   geometry_msgs::PoseStamped pose_stamped;
   pose_stamped.header = pose_msg->header;
   pose_stamped.header.seq = primitive_estimator_poses_.size() + 1;
-  pose_stamped.pose = Utils::matrixToRosPose(init_t_w_svin_ * init_t_w_prim_.inverse() *
-                                               Utils::rosPoseToMatrix(pose_msg->pose.pose) * params_.T_body_imu_ *
+  pose_stamped.pose = Utility::matrixToRosPose(init_t_w_svin_ * init_t_w_prim_.inverse() *
+                                               Utility::rosPoseToMatrix(pose_msg->pose.pose) * params_.T_body_imu_ *
                                                params_.T_imu_cam0_);
   // primitive_estimator_poses_.push_back(pose_stamped);
 }
