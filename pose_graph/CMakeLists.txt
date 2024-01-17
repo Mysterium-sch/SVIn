@@ -71,6 +71,10 @@ generate_messages(
 catkin_package(CATKIN_DEPENDS okvis_ros pcl_ros pcl_conversions)
 
 add_library(${PROJECT_NAME} 
+    src/utils/Utils.cpp
+    src/utils/CameraPoseVisualization.cpp
+    src/utils/UtilsOpenCV.cpp
+    src/utils/Statistics.cpp
     src/pose_graph/GlobalMapping.cpp
     src/pose_graph/Keyframe.cpp
     src/pose_graph/LoopClosure.cpp
@@ -79,10 +83,6 @@ add_library(${PROJECT_NAME}
     src/pose_graph/Publisher.cpp
     src/pose_graph/Subscriber.cpp
     src/pose_graph/SwitchingEstimator.cpp
-    src/utils/CameraPoseVisualization.cpp
-    src/utils/UtilsOpenCV.cpp
-    src/utils/Utils.cpp
-    src/utils/Statistics.cpp
     # src/utils/LoopClosureUtils.cpp
     ThirdParty/DBoW/BowVector.cpp
     ThirdParty/DBoW/FBrief.cpp
@@ -94,6 +94,8 @@ add_library(${PROJECT_NAME}
     ThirdParty/DVision/BRIEF.cpp
     ThirdParty/VocabularyBinary.cpp
 )
+
+add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_generate_messages_cpp)
 
 target_link_libraries(${PROJECT_NAME}
   opengv
