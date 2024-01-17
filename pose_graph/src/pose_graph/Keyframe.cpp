@@ -384,12 +384,12 @@ bool Keyframe::findConnection(Keyframe* old_kf) {
   matched_ids = point_ids_;
 
   if (params_.debug_mode_) {
-    cv::Mat old_img = UtilityOpenCV::DrawCircles(old_kf->image, old_kf->keypoints);
-    cv::Mat cur_image = UtilityOpenCV::DrawCircles(image, point_2d_uv);
+    cv::Mat old_img = UtilsOpenCV::DrawCircles(old_kf->image, old_kf->keypoints);
+    cv::Mat cur_image = UtilsOpenCV::DrawCircles(image, point_2d_uv);
     std::string loop_candidate_directory = params_.debug_output_path_ + "/loop_candidates/";
     std::string filename = loop_candidate_directory + "loop_candidate_" + std::to_string(index) + "_" +
                            std::to_string(old_kf->index) + ".png";
-    UtilityOpenCV::showImagesSideBySide(cur_image, old_img, "loop closing candidates", false, true, filename);
+    UtilsOpenCV::showImagesSideBySide(cur_image, old_img, "loop closing candidates", false, true, filename);
   }
 
   searchByBRIEFDes(matched_2d_old,
@@ -407,7 +407,7 @@ bool Keyframe::findConnection(Keyframe* old_kf) {
 
   if (params_.debug_mode_) {
     cv::Mat corners_match_image =
-        UtilityOpenCV::DrawCornersMatches(image, matched_2d_cur, old_kf->image, matched_2d_old, true);
+        UtilsOpenCV::DrawCornersMatches(image, matched_2d_cur, old_kf->image, matched_2d_old, true);
     std::string dscriptor_match_dir = params_.debug_output_path_ + "/descriptor_matched/";
     std::string filename = dscriptor_match_dir + "descriptor_match_" + std::to_string(index) + "_" +
                            std::to_string(old_kf->index) + ".png";
@@ -428,7 +428,7 @@ bool Keyframe::findConnection(Keyframe* old_kf) {
 
   //   if (params_.debug_image_) {
   //     cv::Mat corners_match_image =
-  //         UtilityOpenCV::DrawCornersMatches(image, matched_2d_cur, old_kf->image, matched_2d_old, true);
+  //         UtilsOpenCV::DrawCornersMatches(image, matched_2d_cur, old_kf->image, matched_2d_old, true);
   //     std::string dscriptor_match_dir = pkg_path + "/output_logs/geometric_verification/";
   //     std::string filename = dscriptor_match_dir + "geometric_verification_" + std::to_string(index) + "_" +
   //                            std::to_string(old_kf->index) + ".png";
@@ -455,7 +455,7 @@ bool Keyframe::findConnection(Keyframe* old_kf) {
 
     if (params_.debug_mode_) {
       cv::Mat pnp_verified_image =
-          UtilityOpenCV::DrawCornersMatches(image, matched_2d_cur, old_kf->image, matched_2d_old, true);
+          UtilsOpenCV::DrawCornersMatches(image, matched_2d_cur, old_kf->image, matched_2d_old, true);
       cv::Mat notation(50, pnp_verified_image.cols, CV_8UC3, cv::Scalar(255, 255, 255));
       putText(notation,
               "current frame: " + std::to_string(index),
@@ -491,7 +491,7 @@ bool Keyframe::findConnection(Keyframe* old_kf) {
     if (abs(relative_yaw) < 25.0 && relative_t.norm() < 15.0) {
       if (params_.debug_mode_) {
         cv::Mat loop_image =
-            UtilityOpenCV::DrawCornersMatches(image, matched_2d_cur, old_kf->image, matched_2d_old, true);
+            UtilsOpenCV::DrawCornersMatches(image, matched_2d_cur, old_kf->image, matched_2d_old, true);
         cv::Mat notation(50, loop_image.cols, CV_8UC3, cv::Scalar(255, 255, 255));
         putText(notation,
                 "current frame: " + std::to_string(index),

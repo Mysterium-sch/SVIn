@@ -70,7 +70,7 @@ void Subscriber::primitiveEstimatorCallback(const nav_msgs::OdometryConstPtr& ms
 }
 
 void Subscriber::imageCallback(const sensor_msgs::ImageConstPtr& image_msg) {
-  cv::Mat image = UtilityOpenCV::readRosImage(image_msg, false);
+  cv::Mat image = UtilsOpenCV::readRosImage(image_msg, false);
   auto image_with_timestamp =
       std::make_unique<std::pair<Timestamp, cv::Mat>>(std::make_pair(image_msg->header.stamp.toNSec(), image));
   // raw image callback is not compulsory
@@ -140,7 +140,7 @@ void Subscriber::keyframeCallback(const sensor_msgs::ImageConstPtr& kf_image_msg
   std::vector<std::vector<int64_t>> kf_covisibilities;
 
   int64_t keyframe_index = -1;
-  cv::Mat kf_image = UtilityOpenCV::readRosImage(kf_image_msg);
+  cv::Mat kf_image = UtilsOpenCV::readRosImage(kf_image_msg);
 
   for (unsigned int i = 0; i < kf_points->points.size(); i++) {
     keyframe_index = kf_points->channels[i].values[4];
